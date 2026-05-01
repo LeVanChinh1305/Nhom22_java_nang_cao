@@ -1,16 +1,19 @@
 package com.example.exceptions;
 
+import java.util.Map;
+
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import java.util.Map;
 
 @Provider
-public class GlobalExceptionMapper implements ExceptionMapper<AppException> {
+public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
     @Override
-    public Response toResponse(AppException e) {
-        return Response.status(e.getStatusCode())
-                .entity(Map.of("message", e.getMessage()))
+    public Response toResponse(Throwable e) {
+        // In lỗi ra terminal của mvn quarkus:dev để bạn kiểm tra
+        e.printStackTrace(); 
+        return Response.status(500)
+                .entity(Map.of("error", "Lỗi server: " + e.getMessage()))
                 .build();
     }
 }
